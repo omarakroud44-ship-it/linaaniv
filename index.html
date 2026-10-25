@@ -64,15 +64,19 @@ small{opacity:.7}
   }
   face=defaultFace();
 
-  // === PHOTO : mets ton image dans le même dossier que ce fichier et appelle-la lina.jpg ===
-  var PHOTO='lina.jpg';
-  var img=new Image();
-  img.onload=function(){
-    var sz=Math.min(img.width,img.height),c=document.createElement('canvas');c.width=c.height=160;
-    c.getContext('2d').drawImage(img,(img.width-sz)/2,(img.height-sz)/2,sz,sz,0,0,160,160);
-    face=c;
-  };
-  img.src=PHOTO;
+  // === PHOTO : mets ton image dans le même dossier que ce fichier et appelle-la lina.jpg, lina.jpeg ou lina.png ===
+  var PHOTOS=['lina.jpg','lina.jpeg','lina.png','lina.JPG','lina.JPEG'],pi=0;
+  function loadPhoto(){
+    var img=new Image();
+    img.onload=function(){
+      var sz=Math.min(img.width,img.height),c=document.createElement('canvas');c.width=c.height=160;
+      c.getContext('2d').drawImage(img,(img.width-sz)/2,(img.height-sz)/2,sz,sz,0,0,160,160);
+      face=c;
+    };
+    img.onerror=function(){pi++;if(pi<PHOTOS.length)loadPhoto()};
+    img.src=PHOTOS[pi];
+  }
+  loadPhoto();
 
   function name(){return 'Lina'}
 
